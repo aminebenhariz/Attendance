@@ -34,4 +34,20 @@ class PauseTest extends \PHPUnit_Framework_TestCase
             [new \DateTime('2015-12-12 10:00'), new \DateTime('2015-12-13 10:30')],
         ];
     }
+
+    /**
+     * @return Pause
+     */
+    public function testValidPauseCreation()
+    {
+        $start = new \DateTime('2015-12-12 09:30');
+        $end = new \DateTime('2015-12-12 10:00');
+
+        $pause = new Pause($start, $end);
+
+        $this->assertSame($start, $pause->getStart());
+        $this->assertSame($end, $pause->getEnd());
+
+        return $pause;
+    }
 }
