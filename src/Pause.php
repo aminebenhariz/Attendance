@@ -25,6 +25,14 @@ class Pause
      */
     public function __construct(\DateTime $start, \DateTime $end)
     {
+        if ($start > $end) {
+            throw new \InvalidArgumentException("Pause can't start after ending");
+        }
+
+        if ($start->format('Y-m-d') !== $end->format('Y-m-d')) {
+            throw new \InvalidArgumentException("Pause must end in the same day");
+        }
+
         $this->start = $start;
         $this->end = $end;
     }
