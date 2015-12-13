@@ -50,4 +50,58 @@ class PauseTest extends \PHPUnit_Framework_TestCase
 
         return $pause;
     }
+
+    /**
+     * @dataProvider pauseOverlappingProvider
+     * @param Pause $pause1
+     * @param Pause $pause2
+     * @param $overlapping
+     */
+    public function testPauseOverlapping(Pause $pause1, Pause $pause2, $overlapping)
+    {
+        // isOverlapping is symmetric, must work both ways
+        $this->assertSame($overlapping, $pause1->isOverlapping($pause2));
+        $this->assertSame($overlapping, $pause2->isOverlapping($pause1));
+    }
+
+    /**
+     * @return array
+     */
+    public function pauseOverlappingProvider()
+    {
+        return [
+            [
+                // no overlapping
+                //   ======
+                //             =======
+                new Pause(new \DateTime('2015-12-12 09:30'), new \DateTime('2015-12-12 10:00')),
+                new Pause(new \DateTime('2015-12-12 10:30'), new \DateTime('2015-12-12 11:00')),
+                false,
+            ],
+            [
+                // intersection
+                //   ======
+                //        =======
+                new Pause(new \DateTime('2015-12-12 09:30'), new \DateTime('2015-12-12 10:00')),
+                new Pause(new \DateTime('2015-12-12 09:45'), new \DateTime('2015-12-12 10:15')),
+                true,
+            ],
+            [
+                // contained
+                //       ======
+                //     ===========
+                new Pause(new \DateTime('2015-12-12 09:30'), new \DateTime('2015-12-12 11:00')),
+                new Pause(new \DateTime('2015-12-12 10:00'), new \DateTime('2015-12-12 10:30')),
+                true,
+            ],
+            [
+                // just touching, this is not considered overlapping
+                //    ======
+                //          =======
+                new Pause(new \DateTime('2015-12-12 09:30'), new \DateTime('2015-12-12 10:00')),
+                new Pause(new \DateTime('2015-12-12 10:00'), new \DateTime('2015-12-12 10:30')),
+                false,
+            ],
+        ];
+    }
 }

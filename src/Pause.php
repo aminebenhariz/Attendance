@@ -52,4 +52,21 @@ class Pause
     {
         return $this->end;
     }
+
+    /**
+     * @param Pause $pause
+     * @return bool
+     */
+    public function isOverlapping(Pause $pause)
+    {
+        if ($this->getEnd() <= $pause->getStart()) {
+            return false;
+        }
+
+        if ($this->getStart() >= $pause->getEnd()) {
+            return false;
+        }
+
+        return true;
+    }
 }
