@@ -21,7 +21,7 @@ class DayAttendance
     /**
      * @var Pause[]
      */
-    private $pauseList;
+    private $pauseList = [];
 
     /**
      * DayAttendance constructor.
@@ -41,7 +41,12 @@ class DayAttendance
 
         $this->arrival = $arrival;
         $this->departure = $departure;
-        $this->pauseList = $pauseList;
+
+        if (!empty($pauseList)) {
+            foreach ($pauseList as $pause) {
+                $this->addPause($pause);
+            }
+        }
     }
 
     /**
@@ -66,5 +71,27 @@ class DayAttendance
     public function getPauseList()
     {
         return $this->pauseList;
+    }
+
+    /**
+     * @param Pause $pause
+     */
+    private function addPause(Pause $pause)
+    {
+        if ($pause->getStart() < $this->getArrival()) {
+            throw new \InvalidArgumentException;
+        }
+
+        if ($pause->getEnd() > $this->getDeparture()) {
+            throw new \InvalidArgumentException;
+        }
+
+        foreach ($this->getPauseList() as $existingPause) {
+            if ($pause->isOverlapping($existingPause)) {
+                throw new \InvalidArgumentException;
+            }
+        }
+
+        $this->pauseList[] = $pause;
     }
 }
