@@ -7,14 +7,15 @@ php:
   - '7.0'
   - hhvm
 
+sudo: false
+
 before_script:
   - travis_retry composer self-update
-  - travis_retry composer update
+  - travis_retry composer install --no-interaction --prefer-source
 
 script:
-  - if [ "$TRAVIS_PHP_VERSION" == 7 ]; then vendor/bin/phpunit; fi
-  - if [ "$TRAVIS_PHP_VERSION" != 7 ]; then vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover; fi
+  - mkdir -p build/logs
+  - ./vendor/bin/phpunit --coverage-text
 
 after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - if [ "$TRAVIS_PHP_VERSION" != 7 ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - php vendor/bin/coveralls
