@@ -31,6 +31,14 @@ class DayAttendance
      */
     public function __construct(\DateTime $arrival, \DateTime $departure, array $pauseList)
     {
+        if ($arrival > $departure) {
+            throw new \InvalidArgumentException;
+        }
+
+        if ($arrival->format('Y-m-d') !== $departure->format('Y-m-d')) {
+            throw new \InvalidArgumentException;
+        }
+
         $this->arrival = $arrival;
         $this->departure = $departure;
         $this->pauseList = $pauseList;

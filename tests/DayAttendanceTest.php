@@ -12,6 +12,39 @@ use AmineBenHariz\Attendance\Pause;
 class DayAttendanceTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @dataProvider invalidDayAttendanceCreationProvider
+     * @param \DateTime $arrival
+     * @param \DateTime $departure
+     * @param Pause[] $pauseList
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInvalidDayAttendanceCreation(\DateTime $arrival, \DateTime $departure, array $pauseList)
+    {
+        new DayAttendance($arrival, $departure, $pauseList);
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidDayAttendanceCreationProvider()
+    {
+        return [
+            [
+                // arrival and departure not in the same day
+                new \DateTime('2015-12-12 08:30'),
+                new \DateTime('2015-12-13 17:30'),
+                []
+            ],
+            [
+                // arrival after departure
+                new \DateTime('2015-12-12 17:30'),
+                new \DateTime('2015-12-12 08:30'),
+                []
+            ],
+        ];
+    }
+
+    /**
      * @return DayAttendance
      */
     public function testValidDayAttendanceCreation()
