@@ -55,7 +55,6 @@ class Pause
 
     /**
      * @return \DateInterval
-     * @throws \Exception
      */
     public function getDuration()
     {
