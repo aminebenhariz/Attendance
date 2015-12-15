@@ -104,4 +104,13 @@ class PauseTest extends \PHPUnit_Framework_TestCase
             ],
         ];
     }
+
+    /**
+     * @depends testValidPauseCreation
+     * @param Pause $pause
+     */
+    public function testGetPauseDuration(Pause $pause)
+    {
+        $this->assertSame('00:30:00', $pause->getDuration()->format('%H:%I:%S'));
+    }
 }

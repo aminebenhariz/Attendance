@@ -54,6 +54,20 @@ class Pause
     }
 
     /**
+     * @return \DateInterval
+     * @throws \Exception
+     */
+    public function getDuration()
+    {
+        $duration = $this->getStart()->diff($this->getEnd());
+        if ($duration === false) {
+            throw new \Exception('Error while calculating pause duration');
+        }
+
+        return $duration;
+    }
+
+    /**
      * @param Pause $pause
      * @return bool
      */
