@@ -59,12 +59,7 @@ class Pause
      */
     public function getDuration()
     {
-        $duration = $this->getStart()->diff($this->getEnd());
-        if ($duration === false) {
-            throw new \Exception('Error while calculating pause duration');
-        }
-
-        return $duration;
+        return $this->getStart()->diff($this->getEnd());
     }
 
     /**
