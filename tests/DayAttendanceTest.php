@@ -42,12 +42,21 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
                 []
             ],
             [
-                // pause out of day interval
+                // pause starts before arrival
                 new \DateTime('2015-12-12 08:30'),
                 new \DateTime('2015-12-12 17:30'),
                 [
                     new Pause(new \DateTime('2015-12-12 07:00'), new \DateTime('2015-12-12 07:30')),
                     new Pause(new \DateTime('2015-12-12 10:00'), new \DateTime('2015-12-12 10:30')),
+                ]
+            ],
+            [
+                // pause ends after departure
+                new \DateTime('2015-12-12 08:30'),
+                new \DateTime('2015-12-12 17:30'),
+                [
+                    new Pause(new \DateTime('2015-12-12 10:00'), new \DateTime('2015-12-12 10:30')),
+                    new Pause(new \DateTime('2015-12-12 17:15'), new \DateTime('2015-12-12 17:45')),
                 ]
             ],
             [
