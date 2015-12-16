@@ -139,7 +139,7 @@ class DayAttendance
         $pauseList = [];
         if (!empty($times)) {
             foreach ($times as $pauseBlock) {
-                // pauseBlock = (10:00-10:30)
+                // Pause Block: '(10:00-10:30)'
                 $pauseStart = new \DateTime($date . ' ' . substr($pauseBlock, 1, 5));
                 $pauseEnd = new \DateTime($date . ' ' . substr($pauseBlock, 7, 5));
                 $pauseList[] = new Pause($pauseStart, $pauseEnd);
