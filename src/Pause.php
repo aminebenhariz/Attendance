@@ -77,4 +77,12 @@ class Pause
 
         return true;
     }
+
+    /**
+     * @return string
+     */
+    public function exportBlock()
+    {
+        return '(' . $this->getStart()->format('H:i') . '-' . $this->getEnd()->format('H:i') . ')';
+    }
 }

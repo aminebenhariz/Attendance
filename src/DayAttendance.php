@@ -177,4 +177,21 @@ class DayAttendance
     {
         return preg_match(self::DAY_ATTENDANCE_LINE_REGEX, $dayAttendanceLine) === 1;
     }
+
+    /**
+     * @return string
+     */
+    public function exportLine()
+    {
+        $date = $this->getArrival()->format('Y-m-d');
+        $line = $date. '|' . $this->getArrival()->format('H:i');
+
+        foreach ($this->getPauseList() as $pause) {
+            $line .= ' ' . $pause->exportBlock();
+        }
+
+        $line .= ' ' . $this->getDeparture()->format('H:i');
+
+        return $line;
+    }
 }

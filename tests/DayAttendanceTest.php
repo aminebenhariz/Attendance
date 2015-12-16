@@ -159,4 +159,16 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
         $dayAttendanceLine = 'lorem';
         DayAttendance::parseDayAttendanceLine($dayAttendanceLine);
     }
+
+    /**
+     * @depends testValidDayAttendanceCreation
+     * @param DayAttendance $dayAttendance
+     */
+    public function testExportLine(DayAttendance $dayAttendance)
+    {
+        $this->assertSame(
+            '2015-12-12|08:30 (10:00-10:15) (12:30-13:30) (16:00-16:15) 17:30',
+            $dayAttendance->exportLine()
+        );
+    }
 }
