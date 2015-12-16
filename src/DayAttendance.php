@@ -9,6 +9,11 @@ namespace AmineBenHariz\Attendance;
 class DayAttendance
 {
     /**
+     * example: 2015-12-12|08:30 (10:00-10:30) (12:30-13:30) (16:00-16:30) 17:30
+     */
+    const DAY_ATTENDANCE_LINE_REGEX = '/^\d{4}-\d{2}-\d{2}\|\d{2}:\d{2}( \(\d{2}:\d{2}-\d{2}:\d{2}\))* \d{2}:\d{2}$/';
+
+    /**
      * @var \DateTime
      */
     private $arrival;
@@ -112,5 +117,45 @@ class DayAttendance
         }
 
         return $cursor->diff($this->getDeparture());
+    }
+
+    /**
+     * @param $dayAttendanceLine
+     * @return DayAttendance
+     */
+    public static function parseDayAttendanceLine($dayAttendanceLine)
+    {
+        if (!self::isValidDayAttendaceLine($dayAttendanceLine)) {
+            throw new \InvalidArgumentException;
+        }
+
+        list($date, $timeLine) = explode('|', $dayAttendanceLine);
+
+        $times = explode(' ', $timeLine);
+
+        $arrival = new \DateTime($date . ' ' . array_shift($times));
+        $departure = new \DateTime($date . ' ' . array_pop($times));
+
+        $pauseList = [];
+        if (!empty($times)) {
+            foreach ($times as $pauseBlock) {
+                // pauseBlock = (10:00-10:30)
+                $pauseStart = new \DateTime($date . ' ' . substr($pauseBlock, 1, 5));
+                $pauseEnd = new \DateTime($date . ' ' . substr($pauseBlock, 7, 5));
+                $pauseList[] = new Pause($pauseStart, $pauseEnd);
+            }
+        }
+
+        $dayAttendance = new DayAttendance($arrival, $departure, $pauseList);
+        return $dayAttendance;
+    }
+
+    /**
+     * @param $dayAttendanceLine
+     * @return int
+     */
+    public static function isValidDayAttendaceLine($dayAttendanceLine)
+    {
+        return preg_match(self::DAY_ATTENDANCE_LINE_REGEX, $dayAttendanceLine) === 1;
     }
 }

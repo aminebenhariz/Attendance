@@ -101,4 +101,62 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame('07:30:00', $dayAttendance->getDuration()->format('%H:%I:%S'));
     }
+
+    /**
+     * @dataProvider isValidDayAttendanceLineProvider
+     * @param string $dayAttendanceLine
+     * @param bool $valid
+     */
+    public function testIsValidDayAttendanceLine($dayAttendanceLine, $valid)
+    {
+        $this->assertSame($valid, DayAttendance::isValidDayAttendaceLine($dayAttendanceLine));
+    }
+
+    /**
+     * @return array
+     */
+    public function isValidDayAttendanceLineProvider()
+    {
+        return [
+            ['', false], // empty
+            ['lorem', false], // random
+            ['08:30 (10:00-10:30) (16:00-16:30) 17:30', false], // no date
+            ['2015-12-12|', false], // no timeLine
+            ['2015-12-12|(10:00-10:30) (16:00-16:30) 17:30', false], // no arrival
+            ['2015-12-12|08:30 (10:00-10:30) (16:00-16:30)', false], // no departure
+            ['2015-12-1x|08:30 (10:00-10:30) (16:00-16:30) 17:30', false], // invalid date
+
+            ['2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30', true], // correct
+            ['2015-12-12|08:30 17:30', true], // correct, no pauses
+        ];
+    }
+
+    public function testParseDayAttendanceLine()
+    {
+        $dayAttendanceLine = '2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30';
+        $dayAttendance = DayAttendance::parseDayAttendanceLine($dayAttendanceLine);
+
+        $this->assertInstanceOf('\AmineBenHariz\Attendance\DayAttendance', $dayAttendance);
+
+        $this->assertSame('2015-12-12 08:30', $dayAttendance->getArrival()->format('Y-m-d H:i'));
+        $this->assertSame('2015-12-12 17:30', $dayAttendance->getDeparture()->format('Y-m-d H:i'));
+
+        $pauseList = $dayAttendance->getPauseList();
+        $this->assertCount(2, $pauseList);
+
+        $this->assertSame('2015-12-12 10:00', $pauseList[0]->getStart()->format('Y-m-d H:i'));
+        $this->assertSame('2015-12-12 10:30', $pauseList[0]->getEnd()->format('Y-m-d H:i'));
+
+        $this->assertSame('2015-12-12 16:00', $pauseList[1]->getStart()->format('Y-m-d H:i'));
+        $this->assertSame('2015-12-12 16:30', $pauseList[1]->getEnd()->format('Y-m-d H:i'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInvalidParseDayAttendanceLine()
+    {
+        $dayAttendanceLine = 'lorem';
+        DayAttendance::parseDayAttendanceLine($dayAttendanceLine);
+    }
 }
