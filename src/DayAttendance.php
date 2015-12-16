@@ -144,7 +144,7 @@ class DayAttendance
      */
     public static function parseDayAttendanceLine($dayAttendanceLine)
     {
-        if (!self::isValidDayAttendaceLine($dayAttendanceLine)) {
+        if (!self::isValidDayAttendanceLine($dayAttendanceLine)) {
             throw new \InvalidArgumentException;
         }
 
@@ -173,7 +173,7 @@ class DayAttendance
      * @param $dayAttendanceLine
      * @return int
      */
-    public static function isValidDayAttendaceLine($dayAttendanceLine)
+    public static function isValidDayAttendanceLine($dayAttendanceLine)
     {
         return preg_match(self::DAY_ATTENDANCE_LINE_REGEX, $dayAttendanceLine) === 1;
     }

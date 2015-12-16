@@ -109,7 +109,7 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsValidDayAttendanceLine($dayAttendanceLine, $valid)
     {
-        $this->assertSame($valid, DayAttendance::isValidDayAttendaceLine($dayAttendanceLine));
+        $this->assertSame($valid, DayAttendance::isValidDayAttendanceLine($dayAttendanceLine));
     }
 
     /**
