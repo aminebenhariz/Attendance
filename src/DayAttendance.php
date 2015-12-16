@@ -105,11 +105,12 @@ class DayAttendance
      */
     private function isPauseOverlapping(Pause $pause)
     {
-        if (empty($this->getPauseList())) {
+        $existingPauseList = $this->getPauseList();
+        if (empty($existingPauseList)) {
             return false;
         }
 
-        foreach ($this->getPauseList() as $existingPause) {
+        foreach ($existingPauseList as $existingPause) {
             if ($pause->isOverlapping($existingPause)) {
                 return true;
             }
