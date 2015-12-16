@@ -91,13 +91,31 @@ class DayAttendance
             throw new \InvalidArgumentException;
         }
 
+        if ($this->isPauseOverlapping($pause)) {
+            throw new \InvalidArgumentException;
+        }
+
+
+        $this->pauseList[] = $pause;
+    }
+
+    /**
+     * @param Pause $pause
+     * @return bool
+     */
+    private function isPauseOverlapping(Pause $pause)
+    {
+        if (empty($this->getPauseList())) {
+            return false;
+        }
+
         foreach ($this->getPauseList() as $existingPause) {
             if ($pause->isOverlapping($existingPause)) {
-                throw new \InvalidArgumentException;
+                return true;
             }
         }
 
-        $this->pauseList[] = $pause;
+        return false;
     }
 
     /**
