@@ -102,8 +102,11 @@ class DayAttendance
     {
         $cursor = clone $this->getArrival();
 
-        if (!empty($this->getPauseList())) {
-            foreach ($this->getPauseList() as $pause) {
+        // PHP 5.4 : empty() can only handle variables
+        $pauseList = $this->getPauseList();
+
+        if (!empty($pauseList)) {
+            foreach ($pauseList as $pause) {
                 $cursor->add($pause->getDuration());
             }
         }
