@@ -6,8 +6,17 @@
 
 ## Table of Contents
 
++ [Install](#install)
 + [Requirements](#requirements)
++ [Testing](#testing)
 
+## Install
+
+Install `Attendance` using Composer.
+
+```
+$ composer require aminebenhariz/attendance
+```
 
 ## Requirements
 
@@ -18,3 +27,9 @@ The following versions of PHP are supported by this version.
 + PHP 5.6
 + PHP 7.0
 + HHVM
+
+## Testing
+
+``` bash
+$ composer test
+```
