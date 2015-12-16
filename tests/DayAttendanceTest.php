@@ -92,4 +92,13 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
 
         return $dayAttendance;
     }
+
+    /**
+     * @depends testValidDayAttendanceCreation
+     * @param DayAttendance $dayAttendance
+     */
+    public function testGetDuration(DayAttendance $dayAttendance)
+    {
+        $this->assertSame('07:30:00', $dayAttendance->getDuration()->format('%H:%I:%S'));
+    }
 }

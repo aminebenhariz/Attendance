@@ -29,7 +29,7 @@ class DayAttendance
      * @param \DateTime $departure
      * @param Pause[] $pauseList
      */
-    public function __construct(\DateTime $arrival, \DateTime $departure, array $pauseList)
+    public function __construct(\DateTime $arrival, \DateTime $departure, array $pauseList = [])
     {
         if ($arrival > $departure) {
             throw new \InvalidArgumentException;
@@ -93,5 +93,21 @@ class DayAttendance
         }
 
         $this->pauseList[] = $pause;
+    }
+
+    /**
+     * @return \DateInterval
+     */
+    public function getDuration()
+    {
+        $cursor = clone $this->getArrival();
+
+        if (!empty($this->getPauseList())) {
+            foreach ($this->getPauseList() as $pause) {
+                $cursor->add($pause->getDuration());
+            }
+        }
+
+        return $cursor->diff($this->getDeparture());
     }
 }
