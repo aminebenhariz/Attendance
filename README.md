@@ -12,10 +12,35 @@
 
 ## Install
 
-Install `Attendance` using Composer.
+Via Composer
+
+``` bash
+$ composer require aminebenhariz/attendance
+```
+
+## Usage
+
+``` php
+$dayAttendanceLine = '2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30';
+$dayAttendance = DayAttendance::parseDayAttendanceLine($dayAttendanceLine);
+
+echo $dayAttendance->getDuration()->format('%H:%I:%S');
+// 07:30:00
+
+echo $dayAttendance->exportLine();
+// 2015-12-12|08:30 (10:00-10:15) (12:30-13:30) (16:00-16:15) 17:30
+```
+
+## DayAttendanceLine Format
 
 ```
-$ composer require aminebenhariz/attendance
+2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30
+
+ - 2015-12-12    : date
+ - 08:30         : arrival time
+ - (10:00-10:30) : pause from 10:00 to 10:30
+ - (16:00-16:30) : pause from 16:00 to 16:30
+ - 17:30         : departure time
 ```
 
 ## Requirements
