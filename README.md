@@ -7,6 +7,8 @@
 ## Table of Contents
 
 + [Install](#install)
++ [Usage](#usage)
++ [DayAttendanceLine Format](#dayattendanceline format)
 + [Requirements](#requirements)
 + [Testing](#testing)
 
@@ -36,11 +38,11 @@ echo $dayAttendance->exportLine();
 ```
 2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30
 
- - 2015-12-12    : date
- - 08:30         : arrival time
+ - 2015-12-12    : date (yyyy-mm-dd)
+ - 08:30         : arrival time (hh:mm)
  - (10:00-10:30) : pause from 10:00 to 10:30
  - (16:00-16:30) : pause from 16:00 to 16:30
- - 17:30         : departure time
+ - 17:30         : departure time (hh:mm)
 ```
 
 ## Requirements
