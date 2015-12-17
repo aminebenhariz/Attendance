@@ -46,7 +46,7 @@ $day5 = DayAttendance::parseDayAttendanceLine('2015-12-18|08:35 (12:24-13:25) 17
 
 $dayAttendanceList = [$day1, $day2, $day3, $day4, $day5];
 
-$weekAttendance = new Attendance($dayAttendanceList);
+$attendance = new Attendance($dayAttendanceList);
 
 echo $attendance->getAverage()->format('%H:%I');
 // 07:40
