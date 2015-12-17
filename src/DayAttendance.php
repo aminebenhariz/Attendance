@@ -139,6 +139,15 @@ class DayAttendance
     }
 
     /**
+     * @return int
+     */
+    public function getTotalMinutes()
+    {
+        $duration = $this->getDuration();
+        return intval($duration->format('%H')) * 60 + intval($duration->format('%I'));
+    }
+
+    /**
      * @param $dayAttendanceLine
      * @return DayAttendance
      */
