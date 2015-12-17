@@ -22,6 +22,8 @@ $ composer require aminebenhariz/attendance
 
 ## Usage
 
+### Calculate attendance
+
 ``` php
 $dayAttendanceLine = '2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30';
 $dayAttendance = DayAttendance::parseDayAttendanceLine($dayAttendanceLine);
@@ -31,6 +33,23 @@ echo $dayAttendance->getDuration()->format('%H:%I:%S');
 
 echo $dayAttendance->exportLine();
 // 2015-12-12|08:30 (10:00-10:15) (12:30-13:30) (16:00-16:15) 17:30
+```
+
+### Calculate average attendance of multiple days
+
+``` php
+$day1 = DayAttendance::parseDayAttendanceLine('2015-12-14|08:31 (12:02-13:42) 17:25');
+$day2 = DayAttendance::parseDayAttendanceLine('2015-12-15|08:29 (12:21-13:32) (16:12-16:22) 17:24');
+$day3 = DayAttendance::parseDayAttendanceLine('2015-12-16|08:52 (12:18-13:12) 17:31');
+$day4 = DayAttendance::parseDayAttendanceLine('2015-12-17|08:12 (12:21-13:52) 17:24');
+$day5 = DayAttendance::parseDayAttendanceLine('2015-12-18|08:35 (12:24-13:25) 17:42');
+
+$dayAttendanceList = [$day1, $day2, $day3, $day4, $day5];
+
+$weekAttendance = new Attendance($dayAttendanceList);
+
+echo $attendance->getAverage()->format('%H:%I');
+// 07:40
 ```
 
 ## DayAttendanceLine Format
