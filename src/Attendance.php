@@ -65,13 +65,14 @@ class Attendance
      */
     public function getAverage()
     {
-        if (empty($this->getDayAttendanceList())) {
+        $getAttendanceList = $this->getDayAttendanceList();
+        if (empty($getAttendanceList)) {
             return new \DateInterval('PT0S');
         }
 
         $totalMinutes = $this->getTotalMinutes();
 
-        $averageMinutes = $totalMinutes / count($this->getDayAttendanceList());
+        $averageMinutes = $totalMinutes / count($getAttendanceList);
 
         return new \DateInterval('PT' . floor($averageMinutes / 60) . 'H' . $averageMinutes % 60 . 'M');
     }
