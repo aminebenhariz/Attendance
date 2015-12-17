@@ -20,6 +20,18 @@ Via Composer
 $ composer require aminebenhariz/attendance
 ```
 
+## DayAttendanceLine Format
+
+```
+2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30
+
+ - 2015-12-12    : date (yyyy-mm-dd)
+ - 08:30         : arrival time (hh:mm)
+ - (10:00-10:30) : pause from 10:00 to 10:30
+ - (16:00-16:30) : pause from 16:00 to 16:30
+ - 17:30         : departure time (hh:mm)
+```
+
 ## Usage
 
 ### Calculate attendance
@@ -48,18 +60,6 @@ $attendance = new Attendance([$day1, $day2, $day3, $day4, $day5]);
 
 echo $attendance->getAverage()->format('%H:%I');
 // 07:40
-```
-
-## DayAttendanceLine Format
-
-```
-2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30
-
- - 2015-12-12    : date (yyyy-mm-dd)
- - 08:30         : arrival time (hh:mm)
- - (10:00-10:30) : pause from 10:00 to 10:30
- - (16:00-16:30) : pause from 16:00 to 16:30
- - 17:30         : departure time (hh:mm)
 ```
 
 ## Requirements
