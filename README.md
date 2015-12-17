@@ -8,7 +8,7 @@
 
 + [Install](#install)
 + [Usage](#usage)
-+ [DayAttendanceLine Format](#dayattendanceline format)
++ [DayAttendanceLine Format](#dayattendanceline-format)
 + [Requirements](#requirements)
 + [Testing](#testing)
 
