@@ -192,8 +192,23 @@ class DayAttendance
      */
     public function exportLine()
     {
-        $date = $this->getArrival()->format('Y-m-d');
-        $line = $date. '|' . $this->getArrival()->format('H:i');
+        return $this->getDate() . '|' . $this->getTimeLine();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDate()
+    {
+        return $this->getArrival()->format('Y-m-d');
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeLine()
+    {
+        $line = $this->getArrival()->format('H:i');
 
         foreach ($this->getPauseList() as $pause) {
             $line .= ' ' . $pause->exportBlock();
