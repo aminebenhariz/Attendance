@@ -32,6 +32,12 @@ $ composer require aminebenhariz/attendance
  - 17:30         : departure time (hh:mm)
 ```
 
+Description can be added like this
+
+```
+2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30|Some Description
+```
+
 ## Usage
 
 ### Calculate attendance

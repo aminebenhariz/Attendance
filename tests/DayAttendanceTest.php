@@ -85,10 +85,12 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
         $pauseList = [$pause1, $pause2, $pause3];
 
         $dayAttendance = new DayAttendance($arrival, $departure, $pauseList);
+        $dayAttendance->setDescription('Some description');
 
         $this->assertSame($arrival, $dayAttendance->getArrival());
         $this->assertSame($departure, $dayAttendance->getDeparture());
         $this->assertSame($pauseList, $dayAttendance->getPauseList());
+        $this->assertSame('Some description', $dayAttendance->getDescription());
 
         return $dayAttendance;
     }
@@ -131,7 +133,37 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testParseDayAttendanceLine()
+    /**
+     * @return DayAttendance
+     */
+    public function testParseDayAttendanceLineWithDescription()
+    {
+        $dayAttendanceLine = '2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30|Some description';
+        $dayAttendance = DayAttendance::parseDayAttendanceLine($dayAttendanceLine);
+
+        $this->assertInstanceOf('\AmineBenHariz\Attendance\DayAttendance', $dayAttendance);
+
+        $this->assertSame('2015-12-12 08:30', $dayAttendance->getArrival()->format('Y-m-d H:i'));
+        $this->assertSame('2015-12-12 17:30', $dayAttendance->getDeparture()->format('Y-m-d H:i'));
+
+        $pauseList = $dayAttendance->getPauseList();
+        $this->assertCount(2, $pauseList);
+
+        $this->assertSame('2015-12-12 10:00', $pauseList[0]->getStart()->format('Y-m-d H:i'));
+        $this->assertSame('2015-12-12 10:30', $pauseList[0]->getEnd()->format('Y-m-d H:i'));
+
+        $this->assertSame('2015-12-12 16:00', $pauseList[1]->getStart()->format('Y-m-d H:i'));
+        $this->assertSame('2015-12-12 16:30', $pauseList[1]->getEnd()->format('Y-m-d H:i'));
+
+        $this->assertSame('Some description', $dayAttendance->getDescription());
+
+        return $dayAttendance;
+    }
+
+    /**
+     * @return DayAttendance
+     */
+    public function testParseDayAttendanceLineWithoutDescription()
     {
         $dayAttendanceLine = '2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30';
         $dayAttendance = DayAttendance::parseDayAttendanceLine($dayAttendanceLine);
@@ -149,6 +181,10 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('2015-12-12 16:00', $pauseList[1]->getStart()->format('Y-m-d H:i'));
         $this->assertSame('2015-12-12 16:30', $pauseList[1]->getEnd()->format('Y-m-d H:i'));
+
+        $this->assertSame('', $dayAttendance->getDescription());
+
+        return $dayAttendance;
     }
 
     /**
@@ -161,13 +197,25 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testValidDayAttendanceCreation
+     * @depends testParseDayAttendanceLineWithDescription
      * @param DayAttendance $dayAttendance
      */
-    public function testExportLine(DayAttendance $dayAttendance)
+    public function testExportLineWithDescription(DayAttendance $dayAttendance)
     {
         $this->assertSame(
-            '2015-12-12|08:30 (10:00-10:15) (12:30-13:30) (16:00-16:15) 17:30',
+            '2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30|Some description',
+            $dayAttendance->exportLine()
+        );
+    }
+
+    /**
+     * @depends testParseDayAttendanceLineWithoutDescription
+     * @param DayAttendance $dayAttendance
+     */
+    public function testExportLineWithoutDescription(DayAttendance $dayAttendance)
+    {
+        $this->assertSame(
+            '2015-12-12|08:30 (10:00-10:30) (16:00-16:30) 17:30',
             $dayAttendance->exportLine()
         );
     }

@@ -11,7 +11,8 @@ class DayAttendance
     /**
      * example: 2015-12-12|08:30 (10:00-10:30) (12:30-13:30) (16:00-16:30) 17:30
      */
-    const DAY_ATTENDANCE_LINE_REGEX = '/^\d{4}-\d{2}-\d{2}\|\d{2}:\d{2}( \(\d{2}:\d{2}-\d{2}:\d{2}\))* \d{2}:\d{2}$/';
+    const DAY_ATTENDANCE_LINE_REGEX =
+        '/^\d{4}-\d{2}-\d{2}\|\d{2}:\d{2}( \(\d{2}:\d{2}-\d{2}:\d{2}\))* \d{2}:\d{2}(\|[^\|]*)?$/';
 
     /**
      * @var \DateTime
@@ -27,6 +28,11 @@ class DayAttendance
      * @var Pause[]
      */
     private $pauseList = [];
+
+    /**
+     * @var string
+     */
+    private $description = "";
 
     /**
      * DayAttendance constructor.
@@ -76,6 +82,22 @@ class DayAttendance
     public function getPauseList()
     {
         return $this->pauseList;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 
     /**
@@ -157,7 +179,15 @@ class DayAttendance
             throw new \InvalidArgumentException;
         }
 
-        list($date, $timeLine) = explode('|', $dayAttendanceLine);
+        $parts = explode('|', $dayAttendanceLine);
+
+        $date = $parts[0];
+        $timeLine = $parts[1];
+        if (isset($parts[2])) {
+            $description = $parts[2];
+        } else {
+            $description = '';
+        }
 
         $times = explode(' ', $timeLine);
 
@@ -175,6 +205,7 @@ class DayAttendance
         }
 
         $dayAttendance = new DayAttendance($arrival, $departure, $pauseList);
+        $dayAttendance->setDescription($description);
         return $dayAttendance;
     }
 
@@ -200,6 +231,10 @@ class DayAttendance
         }
 
         $line .= ' ' . $this->getDeparture()->format('H:i');
+
+        if (!empty($this->getDescription())) {
+            $line .= '|' . $this->getDescription();
+        }
 
         return $line;
     }
