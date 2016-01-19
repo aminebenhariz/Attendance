@@ -223,7 +223,13 @@ class DayAttendance
      */
     public function exportLine()
     {
-        return $this->getDate() . '|' . $this->getTimeLine();
+        $line = $this->getDate() . '|' . $this->getTimeLine();
+
+        if (!empty($this->getDescription())) {
+            $line .= '|' . $this->getDescription();
+        }
+
+        return $line;
     }
 
     /**
@@ -246,10 +252,6 @@ class DayAttendance
         }
 
         $line .= ' ' . $this->getDeparture()->format('H:i');
-
-        if (!empty($this->getDescription())) {
-            $line .= '|' . $this->getDescription();
-        }
 
         return $line;
     }
