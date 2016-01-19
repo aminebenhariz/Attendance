@@ -225,7 +225,7 @@ class DayAttendance
     {
         $line = $this->getDate() . '|' . $this->getTimeLine();
 
-        if (!empty($this->getDescription())) {
+        if ($this->getDescription() !== '') {
             $line .= '|' . $this->getDescription();
         }
 
