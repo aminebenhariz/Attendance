@@ -145,10 +145,8 @@ class DayAttendance
         // PHP 5.4 : empty() can only handle variables
         $pauseList = $this->getPauseList();
 
-        if (!empty($pauseList)) {
-            foreach ($pauseList as $pause) {
-                $cursor->add($pause->getDuration());
-            }
+        foreach ($pauseList as $pause) {
+            $cursor->add($pause->getDuration());
         }
 
         return $cursor->diff($this->getDeparture());
