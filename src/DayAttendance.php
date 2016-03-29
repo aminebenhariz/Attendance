@@ -181,32 +181,54 @@ class DayAttendance
 
         $parts = explode('|', $dayAttendanceLine);
 
-        $date = $parts[0];
-        $timeLine = $parts[1];
-        if (isset($parts[2])) {
-            $description = $parts[2];
-        } else {
-            $description = '';
+        // if empty description
+        if (!isset($parts[2])) {
+            $parts[2] = '';
         }
+
+        list($date, $timeLine, $description) = $parts;
 
         $times = explode(' ', $timeLine);
 
         $arrival = new \DateTime($date . ' ' . array_shift($times));
         $departure = new \DateTime($date . ' ' . array_pop($times));
 
-        $pauseList = [];
-        if (!empty($times)) {
-            foreach ($times as $pauseBlock) {
-                // Pause Block: '(10:00-10:30)'
-                $pauseStart = new \DateTime($date . ' ' . substr($pauseBlock, 1, 5));
-                $pauseEnd = new \DateTime($date . ' ' . substr($pauseBlock, 7, 5));
-                $pauseList[] = new Pause($pauseStart, $pauseEnd);
-            }
-        }
+        $pauseList = self::parsePauseBlocks($date, $times);
 
         $dayAttendance = new DayAttendance($arrival, $departure, $pauseList);
         $dayAttendance->setDescription($description);
         return $dayAttendance;
+    }
+
+    /**
+     * @param string $date date in Y-m-d format, ex: 2016-03-29
+     * @param array $pauseBlocks
+     * @return Pause[]
+     */
+    private static function parsePauseBlocks($date, $pauseBlocks)
+    {
+        if (empty($pauseBlocks)) {
+            return [];
+        }
+
+        $pauseList = [];
+        foreach ($pauseBlocks as $pauseBlock) {
+            $pauseList[] = self::parsePauseBlock($date, $pauseBlock);
+        }
+
+        return $pauseList;
+    }
+
+    /**
+     * @param string $date date in Y-m-d format, ex: 2016-03-29
+     * @param string $pauseBlock ex: (10:00-10:30)
+     * @return Pause
+     */
+    private static function parsePauseBlock($date, $pauseBlock)
+    {
+        $pauseStart = new \DateTime($date . ' ' . substr($pauseBlock, 1, 5));
+        $pauseEnd = new \DateTime($date . ' ' . substr($pauseBlock, 7, 5));
+        return new Pause($pauseStart, $pauseEnd);
     }
 
     /**
