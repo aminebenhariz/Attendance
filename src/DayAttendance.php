@@ -42,7 +42,7 @@ class DayAttendance
      */
     public function __construct(\DateTime $arrival, \DateTime $departure, array $pauseList = [])
     {
-        if ($arrival > $departure or $arrival->format('Y-m-d') !== $departure->format('Y-m-d')) {
+        if ($arrival > $departure || $arrival->format('Y-m-d') !== $departure->format('Y-m-d')) {
             throw new \InvalidArgumentException;
         }
 
