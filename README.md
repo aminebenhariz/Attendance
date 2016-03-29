@@ -3,6 +3,7 @@
 [![Build Status](https://img.shields.io/travis/aminebenhariz/Attendance/master.svg?style=flat)](https://travis-ci.org/aminebenhariz/Attendance)
 [![Code Coverage](https://scrutinizer-ci.com/g/aminebenhariz/Attendance/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/aminebenhariz/Attendance/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/aminebenhariz/Attendance/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/aminebenhariz/Attendance/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/432625e3-2487-4f67-91fa-25d6fd54db67/big.png)](https://insight.sensiolabs.com/projects/432625e3-2487-4f67-91fa-25d6fd54db67)
 
 ## Table of Contents
 
