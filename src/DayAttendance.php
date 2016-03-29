@@ -42,21 +42,15 @@ class DayAttendance
      */
     public function __construct(\DateTime $arrival, \DateTime $departure, array $pauseList = [])
     {
-        if ($arrival > $departure) {
-            throw new \InvalidArgumentException;
-        }
-
-        if ($arrival->format('Y-m-d') !== $departure->format('Y-m-d')) {
+        if ($arrival > $departure or $arrival->format('Y-m-d') !== $departure->format('Y-m-d')) {
             throw new \InvalidArgumentException;
         }
 
         $this->arrival = $arrival;
         $this->departure = $departure;
 
-        if (!empty($pauseList)) {
-            foreach ($pauseList as $pause) {
-                $this->addPause($pause);
-            }
+        foreach ($pauseList as $pause) {
+            $this->addPause($pause);
         }
     }
 
@@ -179,14 +173,7 @@ class DayAttendance
             throw new \InvalidArgumentException;
         }
 
-        $parts = explode('|', $dayAttendanceLine);
-
-        // if empty description
-        if (!isset($parts[2])) {
-            $parts[2] = '';
-        }
-
-        list($date, $timeLine, $description) = $parts;
+        list($date, $timeLine, $description) = self::explodeDayAttendanceLineParts($dayAttendanceLine);
 
         $times = explode(' ', $timeLine);
 
@@ -198,6 +185,22 @@ class DayAttendance
         $dayAttendance = new DayAttendance($arrival, $departure, $pauseList);
         $dayAttendance->setDescription($description);
         return $dayAttendance;
+    }
+
+    /**
+     * @param string $dayAttendanceLine
+     * @return array
+     */
+    private static function explodeDayAttendanceLineParts($dayAttendanceLine)
+    {
+        $parts = explode('|', $dayAttendanceLine);
+
+        // if empty description
+        if (!isset($parts[2])) {
+            $parts[2] = '';
+        }
+
+        return $parts;
     }
 
     /**
