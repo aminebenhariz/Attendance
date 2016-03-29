@@ -188,6 +188,27 @@ class DayAttendanceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return DayAttendance
+     */
+    public function testParseDayAttendanceLineWithoutPauses()
+    {
+        $dayAttendanceLine = '2015-12-12|08:30 17:30';
+        $dayAttendance = DayAttendance::parseDayAttendanceLine($dayAttendanceLine);
+
+        $this->assertInstanceOf('\AmineBenHariz\Attendance\DayAttendance', $dayAttendance);
+
+        $this->assertSame('2015-12-12 08:30', $dayAttendance->getArrival()->format('Y-m-d H:i'));
+        $this->assertSame('2015-12-12 17:30', $dayAttendance->getDeparture()->format('Y-m-d H:i'));
+
+        $pauseList = $dayAttendance->getPauseList();
+        $this->assertCount(0, $pauseList);
+
+        $this->assertSame('', $dayAttendance->getDescription());
+
+        return $dayAttendance;
+    }
+
+    /**
      * @expectedException \InvalidArgumentException
      */
     public function testInvalidParseDayAttendanceLine()
