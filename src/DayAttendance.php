@@ -122,9 +122,6 @@ class DayAttendance
     private function isPauseOverlapping(Pause $pause)
     {
         $existingPauseList = $this->getPauseList();
-        if (empty($existingPauseList)) {
-            return false;
-        }
 
         foreach ($existingPauseList as $existingPause) {
             if ($pause->isOverlapping($existingPause)) {
@@ -208,10 +205,6 @@ class DayAttendance
      */
     private static function parsePauseBlocks($date, $pauseBlocks)
     {
-        if (empty($pauseBlocks)) {
-            return [];
-        }
-
         $pauseList = [];
         foreach ($pauseBlocks as $pauseBlock) {
             $pauseList[] = self::parsePauseBlock($date, $pauseBlock);
