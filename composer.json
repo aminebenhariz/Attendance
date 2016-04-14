@@ -1,6 +1,6 @@
 {
   "name": "aminebenhariz/attendance",
-  "description": "",
+  "description": "Attendance parser and calculator based on text input",
   "homepage": "https://github.com/aminebenhariz/Attendance",
   "license": "MIT",
   "authors": [
